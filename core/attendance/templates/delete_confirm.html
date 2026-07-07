@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Confirm Delete | FRAS</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background: #fef2f2; height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .confirm-card { max-width: 450px; border: none; border-radius: 20px; box-shadow: 0 10px 30px rgba(239, 68, 68, 0.1); }
+    </style>
+</head>
+<body>
+
+<div class="card confirm-card p-4 text-center bg-white">
+    <div class="text-danger mb-3">
+        <i class="fas fa-exclamation-triangle fa-4x"></i>
+    </div>
+    <h3 class="fw-bold text-dark">Delete Student?</h3>
+    <p class="text-muted">Are you sure you want to remove <strong>{{ student.name }}</strong> (ID: {{ student.student_id }}) from the database? This action cannot be undone.</p>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="d-grid gap-2 mt-4">
+            <button type="submit" class="btn btn-danger py-3 fw-bold rounded-3">
+                <i class="fas fa-trash-alt me-2"></i> Yes, Delete Permanently
+            </button>
+            <a href="{% url 'view_students' %}" class="btn btn-light py-2 text-muted">Cancel and Go Back</a>
+        </div>
+    </form>
+</div>
+
+</body>
+</html>

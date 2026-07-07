@@ -1,0 +1,20 @@
+# Python bytecode (compiled files)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Django local configuration and databases
+db.sqlite3
+.env
+local_settings.py
+
+# Local development files (Aapke log files aur attendance reports)
+attendance_logs/
+temp_voice.mp3
+attendance_taken.mp3
+
+# Virtual Environment (Agar aapne banaya ho)
+.venv/
+venv/
+env/

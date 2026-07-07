@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FRAS | Manage Students</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #1e293b; }
+        .sidebar { background: #0f172a; min-height: 100vh; color: white; position: sticky; top: 0; }
+        .nav-link { color: #94a3b8; padding: 12px 20px; border-radius: 10px; margin-bottom: 8px; transition: 0.2s; }
+        .nav-link:hover, .nav-link.active { color: white; background: #334155; }
+        .data-card { border: none; border-radius: 20px; background: white; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+        .table thead th { background-color: #f1f5f9; color: #64748b; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.025em; border: none; padding: 15px; }
+        .table tbody td { padding: 15px; vertical-align: middle; border-bottom: 1px solid #f1f5f9; }
+        .avatar-circle { width: 40px; height: 40px; background: #e2e8f0; color: #64748b; display: flex; align-items: center; justify-content: center; border-radius: 50%; font-weight: bold; }
+        .badge-id { background: #eff6ff; color: #2563eb; font-weight: 600; border-radius: 6px; padding: 5px 10px; }
+        .btn-action { width: 35px; height: 35px; display: inline-flex; align-items: center; justify-content: center; border-radius: 8px; transition: 0.2s; }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2 sidebar p-4 d-none d-md-block">
+            <div class="mb-5 px-2">
+                <h4 class="fw-bold text-white"><i class="fas fa-id-badge me-2 text-primary"></i> FRAS AI</h4>
+            </div>
+            <nav class="nav flex-column">
+                <a class="nav-link" href="{% url 'home' %}"><i class="fas fa-chart-pie me-2"></i> Dashboard</a>
+                <a class="nav-link active" href="{% url 'view_students' %}"><i class="fas fa-user-graduate me-2"></i> Students List</a>
+                <a class="nav-link" href="{% url 'register_student' %}"><i class="fas fa-plus-circle me-2"></i> Enroll New</a>
+                <hr class="text-secondary">
+                <form action="{% url 'logout' %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="border-0 bg-transparent text-secondary p-2 small"><i class="fas fa-power-off me-2"></i> Sign Out</button>
+                </form>
+            </nav>
+        </div>
+
+        <div class="col-md-10 p-lg-5 p-4">
+            <div class="d-flex justify-content-between align-items-center mb-5">
+                <div>
+                    <h2 class="fw-bold">Student Database</h2>
+                    <p class="text-muted mb-0">Total Enrolled: <span class="badge bg-primary rounded-pill">{{ students.count }}</span></p>
+                </div>
+                <a href="{% url 'register_student' %}" class="btn btn-primary rounded-3 shadow-sm">
+                    <i class="fas fa-plus me-2"></i> Add New Student
+                </a>
+            </div>
+
+            <div class="card data-card p-4">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Student</th>
+                                <th>Student ID</th>
+                                <th>Face Encoding</th>
+                                <th class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar-circle me-3">
+                                            {{ student.name|slice:":1"|upper }}
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold text-dark">{{ student.name }}</div>
+                                            <small class="text-muted">Biometrically Registered</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge-id small">{{ student.student_id }}</span>
+                                </td>
+                                <td>
+                                    <span class="text-muted small">
+                                        <i class="fas fa-fingerprint me-1 text-success"></i> 128-D Vector Saved
+                                    </span>
+                                </td>
+                                <td class="text-end">
+                                    <a href="{% url 'edit_student' student.id %}" class="btn-action ...">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <a href="{% url 'delete_student' student.id %}" class="btn-action btn-outline-danger" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </a>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center py-5">
+                                    <i class="fas fa-users-slash fa-3x text-light mb-3"></i>
+                                    <p class="text-muted">No students found. Please register a student first.</p>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // You can add a live search bar later and use this script to filter rows
+    console.log("Student Directory Loaded Successfully");
+</script>
+
+</body>
+</html>
